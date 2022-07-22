@@ -13,12 +13,12 @@ endif()
 # the tests folder is included directly by a parent project, without including
 # the top level CMakeLists.txt.
 if(NOT DEFINED WIZNET_DIR)
-    set(WIZNET_DIR ${CMAKE_SOURCE_DIR}/lib/wiznet-rp-driver/ioLibrary_Driver)
+    set(WIZNET_DIR ${PICO_SDK_PATH}/lib/ioLibrary_Driver)
     message(STATUS "WIZNET_DIR = ${WIZNET_DIR}")
 endif()
 
 if(NOT DEFINED DRIVER_DIR)
-    set(DRIVER_DIR ${CMAKE_SOURCE_DIR}/lib/wiznet-rp-driver/wiznet_driver)
+    set(DRIVER_DIR ${CMAKE_CURRENT_LIST_DIR})
     message(STATUS "DRIVER_DIR = ${DRIVER_DIR}")
 endif()
 
