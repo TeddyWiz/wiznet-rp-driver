@@ -13,28 +13,25 @@ endif()
 # the tests folder is included directly by a parent project, without including
 # the top level CMakeLists.txt.
 if(NOT DEFINED WIZNET_DIR)
-    set(WIZNET_DIR ${CMAKE_SOURCE_DIR}/libraries/ioLibrary_Driver)
+    set(WIZNET_DIR ${CMAKE_SOURCE_DIR}/lib/wiznet-rp-driver/ioLibrary_Driver)
     message(STATUS "WIZNET_DIR = ${WIZNET_DIR}")
 endif()
 
-if(NOT DEFINED PORT_DIR)
-    set(PORT_DIR ${CMAKE_SOURCE_DIR}/port)
-    message(STATUS "PORT_DIR = ${PORT_DIR}")
+if(NOT DEFINED DRIVER_DIR)
+    set(DRIVER_DIR ${CMAKE_SOURCE_DIR}/lib/wiznet-rp-driver/wiznet_driver)
+    message(STATUS "DRIVER_DIR = ${DRIVER_DIR}")
 endif()
 
 add_library(IOLIBRARY_FILES STATIC)
 
 target_sources(IOLIBRARY_FILES PUBLIC
-        ${PORT_DIR}/driver/src/w5x00_spi.c
-        ${PORT_DIR}/driver/src/w5x00_gpio_irq.c
+        ${DRIVER_DIR}/w5x00_spi.c
+        ${DRIVER_DIR}/w5x00_gpio_irq.c
         )
 
 target_include_directories(IOLIBRARY_FILES PUBLIC
         ${WIZNET_DIR}/Ethernet
-        ${PORT_DIR}/driver/inc
-        ${PORT_DIR}
-        #${PICO_LWIP_PATH}/src/include/lwip
-        #${PROJECT_SOURCE_DIR}/src/rp2_commom/pico_lwip/include
+        ${DRIVER_DIR}/include
         )
 
 target_link_libraries(IOLIBRARY_FILES PRIVATE
@@ -42,24 +39,21 @@ target_link_libraries(IOLIBRARY_FILES PRIVATE
         hardware_spi
         hardware_dma
         hardware_clocks
-        #pico_lwip_core
         )
 
 # lwip
-message(STATUS "PICO_LWIP_PATH = ${PICO_LWIP_PATH}")
 add_library(LWIP_FILES STATIC)
 
 target_sources(LWIP_FILES PUBLIC
-        ${PORT_DIR}/lwip/w5x00_lwip.c
+        ${DRIVER_DIR}/w5x00_lwip.c
         )
 
 target_include_directories(LWIP_FILES PUBLIC
         ${WIZNET_DIR}/Ethernet
-        ${PORT_DIR}
-        ${PORT_DIR}/lwip
+        ${DRIVER_DIR}
         )
 
-target_link_libraries(LWIP_FILES PUBLIC#PRIVATE
+target_link_libraries(LWIP_FILES PUBLIC
         ETHERNET_FILES
         pico_lwip
         pico_lwip_nosys
@@ -71,11 +65,11 @@ target_link_libraries(LWIP_FILES PUBLIC#PRIVATE
 add_library(TIMER_FILES STATIC)
 
 target_sources(TIMER_FILES PUBLIC
-        ${PORT_DIR}/timer/timer.c
+        ${DRIVER_DIR}/timer.c
         )
 
 target_include_directories(TIMER_FILES PUBLIC
-        ${PORT_DIR}/timer
+        ${DRIVER_DIR}/include/
         )
 
 target_link_libraries(TIMER_FILES PRIVATE
