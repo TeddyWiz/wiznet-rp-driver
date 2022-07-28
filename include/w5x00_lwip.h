@@ -109,4 +109,6 @@ err_t netif_initialize(struct netif *netif);
  */
 static uint32_t ethernet_frame_crc(const uint8_t *data, int length);
 
+void wizchip_arch_init(void);
+
 #endif /* _W5x00_LWIP_H_ */

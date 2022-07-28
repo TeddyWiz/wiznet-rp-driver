@@ -182,4 +182,7 @@ void network_initialize(wiz_NetInfo net_info);
  */
 void print_network_information(wiz_NetInfo net_info);
 
+
+void wizchip_arch_init(void);
+    
 #endif /* _W5X00_SPI_H_ */

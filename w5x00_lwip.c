@@ -23,6 +23,12 @@
  * ----------------------------------------------------------------------------------------------------
  */
 
+/* Socket */
+#define SOCKET_MACRAW 0
+
+/* Port */
+#define PORT_LWIPERF 5001
+
 /**
  * ----------------------------------------------------------------------------------------------------
  * Variables
@@ -182,3 +188,26 @@ static uint32_t ethernet_frame_crc(const uint8_t *data, int length)
 
     return ~crc;
 }
+void wizchip_arch_init(void)
+{
+    int8_t retval = 0;
+
+    wizchip_spi_initialize();
+    wizchip_cris_initialize();
+
+    wizchip_reset();
+    wizchip_initialize();
+    wizchip_check();
+
+    // Set ethernet chip MAC address
+    setSHAR(mac);
+    ctlwizchip(CW_RESET_PHY, 0);
+
+    retval = socket(SOCKET_MACRAW, Sn_MR_MACRAW, PORT_LWIPERF, 0x00);
+
+    if (retval < 0)
+    {
+        printf(" MACRAW socket open failed\n");
+    }
+}
+
